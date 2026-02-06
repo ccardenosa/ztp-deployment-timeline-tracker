@@ -381,8 +381,11 @@ else
   echo "DEPLOYMENT SUMMARY"
   echo "======================================================================"
 
-  # Calculate deployment time from Agent Bound to Ready for Workloads
-  if [[ "${AGENT_BOUND}" != "N/A" ]] && [[ "${TALM_CGU_DONE}" != "N/A" ]]; then
+  # Deployment time per KPI agreement: ClusterInstance CR creation → TALM CGU Completed (Ready for Workloads)
+  if [[ "${CLUSTERINSTANCE}" != "N/A" ]] && [[ "${TALM_CGU_DONE}" != "N/A" ]]; then
+    DEPLOYMENT_DURATION=$(calc_delta ${EPOCH_11} ${EPOCH_0b})
+    echo "🚀 The deployment took $(format_duration ${DEPLOYMENT_DURATION}) from ClusterInstance CR creation to TALM CGU Completed (Ready for Workloads)"
+  elif [[ "${AGENT_BOUND}" != "N/A" ]] && [[ "${TALM_CGU_DONE}" != "N/A" ]]; then
     DEPLOYMENT_DURATION=$(calc_delta ${EPOCH_11} ${EPOCH_5})
     echo "🚀 The deployment took $(format_duration ${DEPLOYMENT_DURATION}) from Agent Bound to Cluster to Ready for Workloads"
   elif [[ "${AGENT_BOUND}" != "N/A" ]] && [[ "${POLICIES_DONE}" != "N/A" ]]; then
